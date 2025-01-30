@@ -1,61 +1,62 @@
 package pokemon;
 
-
 import attacks.Attack;
 import java.util.List;
 
-
 public class Pokemon {
     private String name;
-    private int health;
+    private int hp;
     private List<Attack> attacks;
 
-    public Pokemon(String name, int health, List<Attack> attacks) {
+    public Pokemon(String name, int hp, List<Attack> attacks) {
         this.name = name;
-        this.health = health;
+        this.hp = hp;
         this.attacks = attacks;
     }
 
-    //getters
-    public String getName() {
-        return name;
+    public boolean isDefeated() {
+        return hp <= 0;
     }
 
-    public int getHealth() {
-        return health;
+    public void attack(Pokemon target, Attack attack) {
+        System.out.println(name + " usa " + attack.getName() + "!");
+        target.receiveDamage(attack.getBaseDamage());
     }
 
-    public List<Attack> getAttacks() {
-        return attacks;
+    private void receiveDamage(int damage) {
+        hp -= damage;
+        if (hp < 0) hp = 0;
     }
 
-    //metodo para recibir daño
-    public void receiveDamage (int damage) {
-        this.health -= damage;
-        if (this.health < 0) this.health = 0; //para evitar numeros negativos
+    // Mostrar lista de ataques disponibles
+    public void showAttacks() {
+        for (int i = 0; i < attacks.size(); i++) {
+            System.out.println((i + 1) + ". " + attacks.get(i).getName() + " (Poder: " + attacks.get(i).getBaseDamage() + ")");
+        }
     }
 
-    //metodo par atacar
-    public void attack(Pokemon opponent, Attack attack) {
-        int damage = attack.getBaseDamage();
-        System.out.println(this.name + " usó " + attack.getName() + "!");
-        System.out.println("Daño base " + attack.getBaseDamage());
-        opponent.receiveDamage(damage);
-        System.out.println(opponent.getName() + " recibió " + damage + " de daño. Salud restante: " + opponent.getHealth());
-
+    // Obtener la cantidad de ataques disponibles
+    public int getAttackCount() {
+        return attacks.size();
     }
 
-    //metodo toString para mostrar info
+    // Obtener un ataque específico por índice
+    public Attack getAttack(int index) {
+        if (index >= 0 && index < attacks.size()) {
+            return attacks.get(index);
+        }
+        return null;
+    }
+
     @Override
     public String toString() {
-        return name + " - Salud: " + health;
-
+        return name + " - HP: " + hp;
     }
-
-
-
-
-
-
-
 }
+
+
+ 
+
+
+
+
